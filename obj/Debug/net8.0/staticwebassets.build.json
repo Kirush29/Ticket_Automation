@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "9CwdYuXK597IYzJpWOHov0JA3XDBQZoBgb9XYWOzNBo=",
+  "Source": "TrafficTicketAutomation",
+  "BasePath": "_content/TrafficTicketAutomation",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "TrafficTicketAutomation\\wwwroot",
+      "Source": "TrafficTicketAutomation",
+      "ContentRoot": "c:\\Users\\kirus\\TrafficTicketAutomation\\wwwroot\\",
+      "BasePath": "_content/TrafficTicketAutomation",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "c:\\Users\\kirus\\TrafficTicketAutomation\\wwwroot\\index.html",
+      "SourceId": "TrafficTicketAutomation",
+      "SourceType": "Discovered",
+      "ContentRoot": "c:\\Users\\kirus\\TrafficTicketAutomation\\wwwroot\\",
+      "BasePath": "_content/TrafficTicketAutomation",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    }
+  ]
+}

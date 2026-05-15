@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "c:\\Users\\kirus\\TrafficTicketAutomation\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.TrafficTicketAutomation.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.TrafficTicketAutomation.props",
+      "PackagePath": "build\\TrafficTicketAutomation.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.TrafficTicketAutomation.props",
+      "PackagePath": "buildMultiTargeting\\TrafficTicketAutomation.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.TrafficTicketAutomation.props",
+      "PackagePath": "buildTransitive\\TrafficTicketAutomation.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

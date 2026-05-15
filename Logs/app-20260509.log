@@ -1,0 +1,1445 @@
+2026-05-09 01:32:30.878 +05:30 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'TicketResult'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-05-09 01:32:31.017 +05:30 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'TicketResult'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-05-09 01:45:54.211 +05:30 [INF] Executed DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-09 01:45:54.276 +05:30 [INF] Executed DbCommand (21ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-09 01:45:54.278 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-09 01:45:54.383 +05:30 [INF] Executed DbCommand (49ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2026-05-09 01:45:54.384 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-09 01:45:54.389 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-09 01:45:54.451 +05:30 [INF] Executed DbCommand (61ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-09 01:45:54.462 +05:30 [INF] Applying migration '20260508200231_InitialCreate'.
+2026-05-09 01:45:54.513 +05:30 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Contracts] (
+    [Id] int NOT NULL IDENTITY,
+    [RA] nvarchar(max) NOT NULL,
+    [Plate] nvarchar(450) NOT NULL,
+    [Start] datetime2 NOT NULL,
+    [End] datetime2 NOT NULL,
+    [Customer] nvarchar(max) NOT NULL,
+    [Email] nvarchar(max) NOT NULL,
+    [Notes] nvarchar(max) NULL,
+    CONSTRAINT [PK_Contracts] PRIMARY KEY ([Id])
+);
+2026-05-09 01:45:54.521 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ProcessingJobs] (
+    [Id] int NOT NULL IDENTITY,
+    [ExcelFileName] nvarchar(max) NOT NULL,
+    [BillFileName] nvarchar(max) NOT NULL,
+    [Status] nvarchar(max) NOT NULL,
+    [ErrorMessage] nvarchar(max) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [CompletedAt] datetime2 NULL,
+    CONSTRAINT [PK_ProcessingJobs] PRIMARY KEY ([Id])
+);
+2026-05-09 01:45:54.537 +05:30 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [TicketResults] (
+    [Id] int NOT NULL IDENTITY,
+    [JobId] int NOT NULL,
+    [Plate] nvarchar(max) NOT NULL,
+    [TicketDate] datetime2 NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [RA] nvarchar(max) NULL,
+    [Customer] nvarchar(max) NULL,
+    [CustomerEmail] nvarchar(max) NULL,
+    [RentalDays] int NULL,
+    [HighlightedBillPath] nvarchar(max) NULL,
+    [ContractPdfPath] nvarchar(max) NULL,
+    [EmailSubject] nvarchar(max) NULL,
+    [EmailBody] nvarchar(max) NULL,
+    [FoundInBill] bit NOT NULL,
+    [ContractFound] bit NOT NULL,
+    [ErrorMessage] nvarchar(max) NULL,
+    CONSTRAINT [PK_TicketResults] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_TicketResults_ProcessingJobs_JobId] FOREIGN KEY ([JobId]) REFERENCES [ProcessingJobs] ([Id]) ON DELETE CASCADE
+);
+2026-05-09 01:45:54.555 +05:30 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Contracts_Plate] ON [Contracts] ([Plate]);
+2026-05-09 01:45:54.562 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_TicketResults_JobId] ON [TicketResults] ([JobId]);
+2026-05-09 01:45:54.618 +05:30 [INF] Executed DbCommand (55ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260508200231_InitialCreate', N'8.0.0');
+2026-05-09 02:06:15.200 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-09 02:06:15.267 +05:30 [INF] Executed DbCommand (21ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-09 02:06:15.274 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-09 02:06:15.277 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-09 02:06:15.331 +05:30 [INF] Executed DbCommand (37ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-09 02:06:15.360 +05:30 [INF] No migrations were applied. The database is already up to date.
+2026-05-09 02:06:15.476 +05:30 [INF] Now listening on: http://localhost:5200
+2026-05-09 02:06:15.480 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-09 02:06:15.483 +05:30 [INF] Hosting environment: Development
+2026-05-09 02:06:15.486 +05:30 [INF] Content root path: C:\Users\kirus\TrafficTicketAutomation
+2026-05-09 02:40:19.281 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/ - null null
+2026-05-09 02:40:19.637 +05:30 [INF] Executing endpoint 'Fallback {*path:nonfile}'
+2026-05-09 02:40:19.732 +05:30 [INF] Sending file. Request path: '/index.html'. Physical path: 'C:\Users\kirus\TrafficTicketAutomation\wwwroot\index.html'
+2026-05-09 02:40:19.736 +05:30 [INF] Executed endpoint 'Fallback {*path:nonfile}'
+2026-05-09 02:40:19.749 +05:30 [INF] HTTP GET /index.html responded 200 in 227.4952 ms
+2026-05-09 02:40:19.766 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/index.html - 200 6533 text/html 503.6561ms
+2026-05-09 02:40:20.251 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/favicon.ico - null null
+2026-05-09 02:40:20.280 +05:30 [INF] HTTP GET /favicon.ico responded 404 in 6.5684 ms
+2026-05-09 02:40:20.294 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/favicon.ico - 404 0 null 43.1451ms
+2026-05-09 02:40:20.322 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5200/favicon.ico, Response status code: 404
+2026-05-09 02:40:46.408 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5200/api/ticket/upload - multipart/form-data; boundary=----WebKitFormBoundarylDDoxAhut4k2Sj22 465428
+2026-05-09 02:40:46.440 +05:30 [INF] CORS policy execution successful.
+2026-05-09 02:40:46.443 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.Upload (TrafficTicketAutomation)'
+2026-05-09 02:40:46.611 +05:30 [INF] Route matched with {action = "Upload", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Upload(Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.IFormFile) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:40:46.838 +05:30 [INF] Files uploaded: 2026-03-25 - EXCEL FORMAT OF THE BILL. (1).xlsx, 2026-04-25 - 743652415 Statement.pdf.
+2026-05-09 02:40:47.719 +05:30 [INF] Executed DbCommand (207ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = DateTime2), @p2='?' (DbType = DateTime2), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [ProcessingJobs] ([BillFileName], [CompletedAt], [CreatedAt], [ErrorMessage], [ExcelFileName], [Status])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-05-09 02:40:47.858 +05:30 [INF] Executing AcceptedResult, writing value of type '<>f__AnonymousType0`1[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-05-09 02:40:47.956 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.Upload (TrafficTicketAutomation) in 1330.2198ms
+2026-05-09 02:40:47.960 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.Upload (TrafficTicketAutomation)'
+2026-05-09 02:40:47.962 +05:30 [INF] HTTP POST /api/ticket/upload responded 202 in 1529.1278 ms
+2026-05-09 02:40:47.984 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5200/api/ticket/upload - 202 null application/json; charset=utf-8 1575.608ms
+2026-05-09 02:40:48.612 +05:30 [WRN] Row 3: invalid date 'InvNo: 743 652 415', skipping.
+2026-05-09 02:40:48.614 +05:30 [WRN] Row 5: invalid date 'Vehicle Class', skipping.
+2026-05-09 02:40:48.619 +05:30 [WRN] Row 6: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.626 +05:30 [WRN] Row 7: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.633 +05:30 [WRN] Row 8: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.640 +05:30 [WRN] Row 9: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.652 +05:30 [WRN] Row 10: invalid date 'Medium vehicle', skipping.
+2026-05-09 02:40:48.663 +05:30 [WRN] Row 11: invalid date 'Medium vehicle', skipping.
+2026-05-09 02:40:48.673 +05:30 [WRN] Row 12: invalid date 'Medium vehicle', skipping.
+2026-05-09 02:40:48.686 +05:30 [WRN] Row 13: invalid date 'Medium vehicle', skipping.
+2026-05-09 02:40:48.692 +05:30 [WRN] Row 14: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.710 +05:30 [WRN] Row 15: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.724 +05:30 [WRN] Row 16: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.736 +05:30 [WRN] Row 17: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.751 +05:30 [WRN] Row 18: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.754 +05:30 [WRN] Row 19: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.766 +05:30 [WRN] Row 20: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.771 +05:30 [WRN] Row 21: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.782 +05:30 [WRN] Row 22: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.786 +05:30 [WRN] Row 23: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.788 +05:30 [WRN] Row 24: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.798 +05:30 [WRN] Row 25: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.803 +05:30 [WRN] Row 26: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.808 +05:30 [WRN] Row 27: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.822 +05:30 [WRN] Row 28: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.850 +05:30 [WRN] Row 29: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.861 +05:30 [WRN] Row 30: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.873 +05:30 [WRN] Row 31: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.878 +05:30 [WRN] Row 32: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.882 +05:30 [WRN] Row 33: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.886 +05:30 [WRN] Row 34: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.894 +05:30 [WRN] Row 35: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.901 +05:30 [WRN] Row 36: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.906 +05:30 [WRN] Row 37: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.914 +05:30 [WRN] Row 38: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.919 +05:30 [WRN] Row 39: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.922 +05:30 [WRN] Row 40: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.925 +05:30 [WRN] Row 41: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.934 +05:30 [WRN] Row 42: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.937 +05:30 [WRN] Row 43: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.940 +05:30 [WRN] Row 44: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.949 +05:30 [WRN] Row 45: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.953 +05:30 [WRN] Row 46: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.956 +05:30 [WRN] Row 47: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.962 +05:30 [WRN] Row 48: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.967 +05:30 [WRN] Row 49: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.969 +05:30 [WRN] Row 50: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.971 +05:30 [WRN] Row 51: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.973 +05:30 [WRN] Row 52: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.978 +05:30 [WRN] Row 53: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.984 +05:30 [WRN] Row 54: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.986 +05:30 [WRN] Row 55: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.988 +05:30 [WRN] Row 56: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.990 +05:30 [WRN] Row 57: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.994 +05:30 [WRN] Row 58: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:48.998 +05:30 [WRN] Row 59: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.002 +05:30 [WRN] Row 60: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.005 +05:30 [WRN] Row 61: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.008 +05:30 [WRN] Row 62: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.012 +05:30 [WRN] Row 63: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.016 +05:30 [WRN] Row 64: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.018 +05:30 [WRN] Row 65: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.019 +05:30 [WRN] Row 66: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.021 +05:30 [WRN] Row 67: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.023 +05:30 [WRN] Row 68: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.025 +05:30 [WRN] Row 69: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.028 +05:30 [WRN] Row 70: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.031 +05:30 [WRN] Row 71: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.033 +05:30 [WRN] Row 72: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.035 +05:30 [WRN] Row 73: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.038 +05:30 [WRN] Row 74: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.040 +05:30 [WRN] Row 75: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.046 +05:30 [WRN] Row 76: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.049 +05:30 [WRN] Row 77: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.053 +05:30 [WRN] Row 78: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.055 +05:30 [WRN] Row 79: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.057 +05:30 [WRN] Row 80: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.062 +05:30 [WRN] Row 81: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.065 +05:30 [WRN] Row 82: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.068 +05:30 [WRN] Row 83: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.070 +05:30 [WRN] Row 84: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.072 +05:30 [WRN] Row 85: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.074 +05:30 [WRN] Row 86: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.076 +05:30 [WRN] Row 87: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.080 +05:30 [WRN] Row 88: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.082 +05:30 [WRN] Row 89: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.085 +05:30 [WRN] Row 90: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.087 +05:30 [WRN] Row 91: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.089 +05:30 [WRN] Row 92: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.092 +05:30 [WRN] Row 93: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.098 +05:30 [WRN] Row 94: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.100 +05:30 [WRN] Row 95: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.103 +05:30 [WRN] Row 96: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.105 +05:30 [WRN] Row 97: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.107 +05:30 [WRN] Row 98: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.113 +05:30 [WRN] Row 99: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.116 +05:30 [WRN] Row 100: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.119 +05:30 [WRN] Row 101: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.122 +05:30 [WRN] Row 102: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.125 +05:30 [WRN] Row 103: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.130 +05:30 [WRN] Row 104: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.133 +05:30 [WRN] Row 105: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.136 +05:30 [WRN] Row 106: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.139 +05:30 [WRN] Row 107: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.142 +05:30 [WRN] Row 108: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.146 +05:30 [WRN] Row 109: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.150 +05:30 [WRN] Row 110: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.152 +05:30 [WRN] Row 111: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.155 +05:30 [WRN] Row 112: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.157 +05:30 [WRN] Row 113: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.163 +05:30 [WRN] Row 114: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.167 +05:30 [WRN] Row 115: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.171 +05:30 [WRN] Row 116: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.173 +05:30 [WRN] Row 117: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.177 +05:30 [WRN] Row 118: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.182 +05:30 [WRN] Row 119: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.184 +05:30 [WRN] Row 120: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.187 +05:30 [WRN] Row 121: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.189 +05:30 [WRN] Row 122: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.192 +05:30 [WRN] Row 123: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.196 +05:30 [WRN] Row 124: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.200 +05:30 [WRN] Row 125: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.202 +05:30 [WRN] Row 126: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.205 +05:30 [WRN] Row 127: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.207 +05:30 [WRN] Row 128: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.209 +05:30 [WRN] Row 129: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.214 +05:30 [WRN] Row 130: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.217 +05:30 [WRN] Row 131: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.219 +05:30 [WRN] Row 132: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.221 +05:30 [WRN] Row 133: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.223 +05:30 [WRN] Row 134: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.226 +05:30 [WRN] Row 135: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.229 +05:30 [WRN] Row 136: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.233 +05:30 [WRN] Row 137: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.236 +05:30 [WRN] Row 138: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.240 +05:30 [WRN] Row 139: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.245 +05:30 [WRN] Row 140: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.250 +05:30 [WRN] Row 141: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.254 +05:30 [WRN] Row 142: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.258 +05:30 [WRN] Row 143: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.264 +05:30 [WRN] Row 144: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.268 +05:30 [WRN] Row 145: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.271 +05:30 [WRN] Row 146: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.278 +05:30 [WRN] Row 147: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.284 +05:30 [WRN] Row 148: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.286 +05:30 [WRN] Row 149: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.292 +05:30 [WRN] Row 150: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.298 +05:30 [WRN] Row 151: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.307 +05:30 [WRN] Row 152: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.315 +05:30 [WRN] Row 153: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.318 +05:30 [WRN] Row 154: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.322 +05:30 [WRN] Row 155: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.326 +05:30 [WRN] Row 156: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.332 +05:30 [WRN] Row 157: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.336 +05:30 [WRN] Row 158: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.339 +05:30 [WRN] Row 159: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.346 +05:30 [WRN] Row 160: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.351 +05:30 [WRN] Row 161: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.354 +05:30 [WRN] Row 162: invalid date 'Light vehicle', skipping.
+2026-05-09 02:40:49.358 +05:30 [INF] Read 0 tickets from 624db40c-4627-47ed-b0d7-4d5dfa01c3e9_2026-03-25 - EXCEL FORMAT OF THE BILL. (1).xlsx.
+2026-05-09 02:40:50.983 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:40:51.001 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:40:51.034 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:40:51.595 +05:30 [INF] Executed DbCommand (34ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:40:51.669 +05:30 [INF] Executed DbCommand (19ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:40:51.684 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:40:51.770 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 721.3631ms
+2026-05-09 02:40:51.774 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:40:51.778 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 777.6862 ms
+2026-05-09 02:40:51.785 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 801.8362ms
+2026-05-09 02:40:53.988 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:40:53.996 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:40:54.001 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:40:54.056 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:40:54.084 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:40:54.100 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:40:54.109 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 89.6197ms
+2026-05-09 02:40:54.120 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:40:54.129 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 133.2837 ms
+2026-05-09 02:40:54.146 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 157.6173ms
+2026-05-09 02:40:56.983 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:40:56.997 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:40:57.004 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:40:57.029 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:40:57.056 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:40:57.073 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:40:57.085 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 68.4352ms
+2026-05-09 02:40:57.093 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:40:57.103 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 106.1509 ms
+2026-05-09 02:40:57.119 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 134.8981ms
+2026-05-09 02:40:59.982 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:40:59.991 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:40:59.996 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:00.077 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:00.112 +05:30 [INF] Executed DbCommand (12ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:00.127 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:00.134 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 76.9088ms
+2026-05-09 02:41:00.140 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:00.147 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 155.9242 ms
+2026-05-09 02:41:00.158 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 176.0254ms
+2026-05-09 02:41:02.986 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:02.999 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:03.007 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:03.036 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:03.062 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:03.080 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:03.090 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 67.3309ms
+2026-05-09 02:41:03.101 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:03.110 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 111.4723 ms
+2026-05-09 02:41:03.120 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 133.5076ms
+2026-05-09 02:41:05.979 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:05.998 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:05.999 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:06.013 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:06.023 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:06.028 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:06.029 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 24.3971ms
+2026-05-09 02:41:06.031 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:06.032 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 33.5756 ms
+2026-05-09 02:41:06.034 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 54.1264ms
+2026-05-09 02:41:09.814 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:09.822 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:09.824 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:09.844 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:09.862 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:09.865 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:09.867 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 36.3027ms
+2026-05-09 02:41:09.870 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:09.872 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 50.4152 ms
+2026-05-09 02:41:09.877 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 63.3038ms
+2026-05-09 02:41:12.825 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:12.829 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:12.830 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:12.838 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:12.846 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:12.848 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:12.849 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 15.5082ms
+2026-05-09 02:41:12.850 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:12.852 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 23.8337 ms
+2026-05-09 02:41:12.856 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 31.1955ms
+2026-05-09 02:41:15.825 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:15.834 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:15.838 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:15.851 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:15.863 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:15.867 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:15.868 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 21.6367ms
+2026-05-09 02:41:15.871 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:15.873 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 38.5401 ms
+2026-05-09 02:41:15.875 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 49.6563ms
+2026-05-09 02:41:18.823 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:18.829 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:18.831 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:18.846 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:18.861 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:18.868 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:18.871 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 31.8277ms
+2026-05-09 02:41:18.874 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:18.876 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 46.8484 ms
+2026-05-09 02:41:18.879 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 55.9411ms
+2026-05-09 02:41:21.820 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:21.826 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:21.832 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:21.853 +05:30 [INF] Executed DbCommand (14ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:21.876 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:21.906 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:21.920 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 83.8796ms
+2026-05-09 02:41:21.928 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:21.934 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 107.7445 ms
+2026-05-09 02:41:21.941 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 121.6886ms
+2026-05-09 02:41:23.975 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:23.989 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:23.995 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:24.030 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:24.068 +05:30 [INF] Executed DbCommand (12ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:24.085 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:24.093 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 78.3861ms
+2026-05-09 02:41:24.102 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:24.105 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 117.0079 ms
+2026-05-09 02:41:24.114 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 139.1526ms
+2026-05-09 02:41:26.991 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:27.004 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:27.009 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:27.062 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:27.096 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:27.117 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:27.132 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 99.9311ms
+2026-05-09 02:41:27.148 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:27.153 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 149.0167 ms
+2026-05-09 02:41:27.171 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 179.9462ms
+2026-05-09 02:41:29.984 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:30.002 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:30.028 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:30.076 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:30.110 +05:30 [INF] Executed DbCommand (13ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:30.127 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:30.134 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 71.8661ms
+2026-05-09 02:41:30.147 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:30.161 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 159.6505 ms
+2026-05-09 02:41:30.174 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 190.2937ms
+2026-05-09 02:41:32.983 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:32.992 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:32.998 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:33.026 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:33.052 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:33.080 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:33.093 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 81.4577ms
+2026-05-09 02:41:33.102 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:33.107 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 115.1720 ms
+2026-05-09 02:41:33.118 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 134.8395ms
+2026-05-09 02:41:36.824 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:36.829 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:36.831 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:36.845 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:36.851 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:36.854 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:36.856 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 20.9787ms
+2026-05-09 02:41:36.856 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:36.857 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 28.4398 ms
+2026-05-09 02:41:36.858 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 34.3122ms
+2026-05-09 02:41:39.819 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:39.824 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:39.827 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:39.837 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:39.841 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:39.843 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:39.848 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 13.9799ms
+2026-05-09 02:41:39.852 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:39.858 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 33.5595 ms
+2026-05-09 02:41:39.866 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 47.6019ms
+2026-05-09 02:41:42.830 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:42.839 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:42.846 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:42.869 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:42.885 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:42.894 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:42.900 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 37.3718ms
+2026-05-09 02:41:42.905 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:42.910 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 71.3891 ms
+2026-05-09 02:41:42.918 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 87.499ms
+2026-05-09 02:41:45.824 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:45.827 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:45.829 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:45.834 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:45.838 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:45.846 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:45.852 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 21.1231ms
+2026-05-09 02:41:45.854 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:45.857 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 30.4719 ms
+2026-05-09 02:41:45.866 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 41.6602ms
+2026-05-09 02:41:48.818 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:48.824 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:48.826 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:48.852 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:48.862 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:48.869 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:48.872 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 37.6307ms
+2026-05-09 02:41:48.876 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:48.880 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 55.4832 ms
+2026-05-09 02:41:48.885 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 66.6862ms
+2026-05-09 02:41:51.826 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:51.828 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:51.828 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:51.833 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:51.842 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:51.843 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:51.843 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 14.0975ms
+2026-05-09 02:41:51.843 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:51.844 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 16.3613 ms
+2026-05-09 02:41:51.845 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 18.6377ms
+2026-05-09 02:41:54.828 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:54.831 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:54.832 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:54.837 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:54.846 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:54.851 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:54.854 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 20.2211ms
+2026-05-09 02:41:54.857 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:54.858 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 27.5767 ms
+2026-05-09 02:41:54.861 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 32.9199ms
+2026-05-09 02:41:57.820 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:41:57.824 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:57.826 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:41:57.836 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:41:57.853 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:41:57.859 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:41:57.868 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 35.3961ms
+2026-05-09 02:41:57.874 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:41:57.878 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 53.6669 ms
+2026-05-09 02:41:57.887 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 66.56ms
+2026-05-09 02:42:00.826 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:00.837 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:00.844 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:00.865 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:00.878 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:00.890 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:00.897 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 35.1393ms
+2026-05-09 02:42:00.902 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:00.908 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 70.7875 ms
+2026-05-09 02:42:00.917 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 90.5409ms
+2026-05-09 02:42:03.820 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:03.825 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:03.827 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:03.840 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:03.847 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:03.852 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:03.854 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 23.5643ms
+2026-05-09 02:42:03.858 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:03.860 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 34.5737 ms
+2026-05-09 02:42:03.866 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 45.5206ms
+2026-05-09 02:42:06.826 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:06.830 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:06.831 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:06.836 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:06.844 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:06.847 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:06.847 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 14.121ms
+2026-05-09 02:42:06.848 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:06.848 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 18.6050 ms
+2026-05-09 02:42:06.849 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 22.9423ms
+2026-05-09 02:42:09.829 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:09.839 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:09.845 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:09.864 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:09.882 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:09.895 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:09.903 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 46.9805ms
+2026-05-09 02:42:09.908 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:09.914 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 74.9578 ms
+2026-05-09 02:42:09.923 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 93.2904ms
+2026-05-09 02:42:12.822 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:12.826 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:12.827 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:12.843 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:12.855 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:12.860 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:12.867 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 33.377ms
+2026-05-09 02:42:12.873 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:12.876 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 50.7102 ms
+2026-05-09 02:42:12.883 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 60.2429ms
+2026-05-09 02:42:15.829 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:15.837 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:15.842 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:15.864 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:15.882 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:15.892 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:15.898 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 39.7658ms
+2026-05-09 02:42:15.905 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:15.910 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 73.2313 ms
+2026-05-09 02:42:15.919 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 89.9465ms
+2026-05-09 02:42:18.828 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:18.840 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:18.848 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:18.889 +05:30 [INF] Executed DbCommand (23ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:18.898 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:18.903 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:18.905 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 42.4496ms
+2026-05-09 02:42:18.906 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:18.908 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 67.6882 ms
+2026-05-09 02:42:18.914 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 85.4712ms
+2026-05-09 02:42:21.827 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:21.831 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:21.834 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:21.848 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:21.852 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:21.853 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:21.855 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 15.3206ms
+2026-05-09 02:42:21.857 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:21.861 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 30.4587 ms
+2026-05-09 02:42:21.869 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 42.6889ms
+2026-05-09 02:42:24.827 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:24.838 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:24.845 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:24.862 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:24.877 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:24.890 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:24.898 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 43.2234ms
+2026-05-09 02:42:24.905 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:24.909 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 71.0552 ms
+2026-05-09 02:42:24.916 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 89.5415ms
+2026-05-09 02:42:27.828 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:27.834 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:27.837 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:27.848 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:27.852 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:27.856 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:27.859 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 12.9324ms
+2026-05-09 02:42:27.862 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:27.864 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 30.5097 ms
+2026-05-09 02:42:27.866 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 38.6032ms
+2026-05-09 02:42:30.825 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:30.829 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:30.833 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:30.841 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:30.844 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:30.847 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:30.849 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 10.1422ms
+2026-05-09 02:42:30.850 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:30.851 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 21.6655 ms
+2026-05-09 02:42:30.856 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 30.6004ms
+2026-05-09 02:42:33.829 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:33.834 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:33.837 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:33.841 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:33.844 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:33.846 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:33.847 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 7.6939ms
+2026-05-09 02:42:33.849 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:33.850 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 15.4614 ms
+2026-05-09 02:42:33.852 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 23.2206ms
+2026-05-09 02:42:42.830 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:42:42.845 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:42.850 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:42:42.865 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:42:42.883 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:42:42.898 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:42:42.908 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 46.0212ms
+2026-05-09 02:42:42.914 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:42:42.919 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 74.0698 ms
+2026-05-09 02:42:42.926 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 96.4272ms
+2026-05-09 02:43:42.826 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:43:42.829 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:43:42.830 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:43:42.849 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:43:42.870 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:43:42.883 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:43:42.890 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 50.3869ms
+2026-05-09 02:43:42.896 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:43:42.901 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 72.3350 ms
+2026-05-09 02:43:42.910 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 84.2626ms
+2026-05-09 02:44:42.832 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:44:42.841 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:44:42.843 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:44:42.860 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:44:42.873 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:44:42.880 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:44:42.886 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 34.9143ms
+2026-05-09 02:44:42.889 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:44:42.890 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 49.3179 ms
+2026-05-09 02:44:42.897 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 64.5641ms
+2026-05-09 02:45:42.834 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:45:42.838 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:45:42.839 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:45:42.849 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:45:42.864 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:45:42.866 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:45:42.871 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 29.7234ms
+2026-05-09 02:45:42.878 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:45:42.880 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 41.7905 ms
+2026-05-09 02:45:42.882 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 48.1323ms
+2026-05-09 02:46:42.823 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:46:42.837 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:46:42.844 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:46:42.874 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:46:42.892 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:46:42.902 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:46:42.907 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 46.5387ms
+2026-05-09 02:46:42.908 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:46:42.910 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 73.1860 ms
+2026-05-09 02:46:42.912 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 88.796ms
+2026-05-09 02:47:42.828 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:47:42.840 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:47:42.846 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:47:42.875 +05:30 [INF] Executed DbCommand (12ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:47:42.904 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:47:42.918 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:47:42.921 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 63.2491ms
+2026-05-09 02:47:42.927 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:47:42.932 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 92.1870 ms
+2026-05-09 02:47:42.941 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 112.9222ms
+2026-05-09 02:48:42.830 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:48:42.834 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:48:42.835 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:48:42.850 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:48:42.874 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:48:42.880 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:48:42.882 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 40.6377ms
+2026-05-09 02:48:42.884 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:48:42.890 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 55.8702 ms
+2026-05-09 02:48:42.898 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 67.578ms
+2026-05-09 02:49:42.831 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:49:42.839 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:49:42.844 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:49:42.865 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:49:42.888 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:49:42.892 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:49:42.894 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 40.1934ms
+2026-05-09 02:49:42.900 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:49:42.905 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 66.5110 ms
+2026-05-09 02:49:42.908 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 77.0113ms
+2026-05-09 02:50:42.815 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:50:42.824 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:50:42.829 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:50:42.849 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:50:42.871 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:50:42.884 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:50:42.891 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 54.9961ms
+2026-05-09 02:50:42.899 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:50:42.905 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 80.4897 ms
+2026-05-09 02:50:42.915 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 99.9341ms
+2026-05-09 02:51:42.827 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:51:42.833 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:51:42.835 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:51:42.848 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:51:42.858 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:51:42.862 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:51:42.864 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 22.0865ms
+2026-05-09 02:51:42.869 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:51:42.874 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 40.2680 ms
+2026-05-09 02:51:42.876 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 49.4865ms
+2026-05-09 02:52:42.822 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:52:42.838 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:52:42.845 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:52:42.871 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:52:42.891 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:52:42.900 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:52:42.906 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 51.1012ms
+2026-05-09 02:52:42.913 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:52:42.918 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 80.7498 ms
+2026-05-09 02:52:42.926 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 103.8141ms
+2026-05-09 02:53:42.834 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:53:42.851 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:53:42.866 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:53:42.894 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:53:42.917 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:53:42.930 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:53:42.938 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 57.7296ms
+2026-05-09 02:53:42.944 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:53:42.949 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 97.7676 ms
+2026-05-09 02:53:42.957 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 122.4972ms
+2026-05-09 02:54:42.824 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:54:42.832 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:54:42.836 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:54:42.855 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:54:42.868 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:54:42.873 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:54:42.877 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 33.6633ms
+2026-05-09 02:54:42.883 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:54:42.888 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 56.1889 ms
+2026-05-09 02:54:42.897 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 73.4446ms
+2026-05-09 02:55:42.830 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:55:42.833 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:55:42.834 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:55:42.841 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:55:42.856 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:55:42.860 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:55:42.862 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 27.2163ms
+2026-05-09 02:55:42.863 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:55:42.864 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 31.8068 ms
+2026-05-09 02:55:42.866 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 36.2785ms
+2026-05-09 02:56:01.866 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:01.873 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:01.876 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:01.904 +05:30 [INF] Executed DbCommand (12ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:01.922 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:01.933 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:01.939 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 54.7833ms
+2026-05-09 02:56:01.946 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:01.951 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 78.4208 ms
+2026-05-09 02:56:01.966 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 100.479ms
+2026-05-09 02:56:02.980 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:02.994 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:03.006 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:03.034 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:03.064 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:03.077 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:03.085 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 65.6968ms
+2026-05-09 02:56:03.096 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:03.102 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 107.8111 ms
+2026-05-09 02:56:03.117 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 137.2759ms
+2026-05-09 02:56:05.987 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:06.001 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:06.008 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:06.028 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:06.041 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:06.051 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:06.058 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 36.1556ms
+2026-05-09 02:56:06.063 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:06.066 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 65.6137 ms
+2026-05-09 02:56:06.073 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 85.6259ms
+2026-05-09 02:56:08.979 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:09.000 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:09.013 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:09.034 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:09.057 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:09.075 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:09.084 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 57.1568ms
+2026-05-09 02:56:09.093 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:09.097 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 97.2510 ms
+2026-05-09 02:56:09.104 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 124.6943ms
+2026-05-09 02:56:12.818 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:12.823 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:12.827 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:12.839 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:12.851 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:12.859 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:12.861 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 30.1143ms
+2026-05-09 02:56:12.863 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:12.866 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 42.4243 ms
+2026-05-09 02:56:12.870 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 51.8819ms
+2026-05-09 02:56:15.831 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:15.839 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:15.842 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:15.859 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:15.873 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:15.878 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:15.882 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 32.9428ms
+2026-05-09 02:56:15.885 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:15.887 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 48.3401 ms
+2026-05-09 02:56:15.890 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 59.6474ms
+2026-05-09 02:56:18.831 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:18.836 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:18.839 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:18.847 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:18.857 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:18.866 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:18.870 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 27.3751ms
+2026-05-09 02:56:18.872 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:18.875 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 39.1982 ms
+2026-05-09 02:56:18.882 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 51.0918ms
+2026-05-09 02:56:21.827 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:21.841 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:21.848 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:21.861 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:21.876 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:21.881 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:21.884 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 27.2844ms
+2026-05-09 02:56:21.887 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:21.890 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 48.8700 ms
+2026-05-09 02:56:21.894 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 66.9846ms
+2026-05-09 02:56:24.832 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:24.840 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:24.843 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:24.852 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:24.860 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:24.865 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:24.866 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 19.3364ms
+2026-05-09 02:56:24.869 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:24.872 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 31.9512 ms
+2026-05-09 02:56:24.878 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 46.1438ms
+2026-05-09 02:56:27.826 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:27.868 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:27.878 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:27.898 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:27.911 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:27.925 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:27.931 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 40.9424ms
+2026-05-09 02:56:27.937 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:27.941 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 73.1943 ms
+2026-05-09 02:56:27.946 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 120.1109ms
+2026-05-09 02:56:30.827 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:30.833 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:30.834 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:30.840 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:30.844 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:30.848 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:30.852 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 15.597ms
+2026-05-09 02:56:30.855 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:30.857 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 24.2032 ms
+2026-05-09 02:56:30.859 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 31.6137ms
+2026-05-09 02:56:33.816 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:33.823 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:33.825 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:33.833 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:33.847 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:33.857 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:33.860 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 32.9796ms
+2026-05-09 02:56:33.867 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:33.873 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 49.7136 ms
+2026-05-09 02:56:33.880 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 63.7996ms
+2026-05-09 02:56:36.828 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:36.830 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:36.831 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:36.840 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:36.849 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:36.854 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:36.855 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 17.4067ms
+2026-05-09 02:56:36.856 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:36.860 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 30.2162 ms
+2026-05-09 02:56:36.867 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 39.5915ms
+2026-05-09 02:56:39.825 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:39.827 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:39.828 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:39.835 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:39.842 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:39.845 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:39.847 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 14.2725ms
+2026-05-09 02:56:39.848 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:39.850 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 22.6733 ms
+2026-05-09 02:56:39.851 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 26.6775ms
+2026-05-09 02:56:42.830 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:42.843 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:42.850 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:42.870 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:42.890 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:42.905 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:42.914 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 49.4026ms
+2026-05-09 02:56:42.923 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:42.929 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 85.6375 ms
+2026-05-09 02:56:42.934 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 103.8482ms
+2026-05-09 02:56:45.828 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:45.840 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:45.847 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:45.859 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:45.871 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:45.879 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:45.882 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 26.4613ms
+2026-05-09 02:56:45.887 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:45.890 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 50.3565 ms
+2026-05-09 02:56:45.896 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 67.8041ms
+2026-05-09 02:56:48.826 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:48.831 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:48.835 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:48.843 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:48.859 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:48.872 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:48.878 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 38.6588ms
+2026-05-09 02:56:48.885 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:48.888 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 56.9267 ms
+2026-05-09 02:56:48.891 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 65.0979ms
+2026-05-09 02:56:51.836 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:51.838 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:51.839 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:51.844 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:51.848 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:51.851 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:51.854 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 13.378ms
+2026-05-09 02:56:51.859 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:51.862 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 24.0372 ms
+2026-05-09 02:56:51.865 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 29.3627ms
+2026-05-09 02:56:54.828 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:54.837 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:54.839 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:54.848 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:54.856 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:54.861 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:54.864 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 20.6004ms
+2026-05-09 02:56:54.867 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:54.869 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 32.0867 ms
+2026-05-09 02:56:54.872 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 44.2822ms
+2026-05-09 02:56:57.827 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:56:57.830 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:57.831 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:56:57.844 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:56:57.850 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:56:57.852 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:56:57.854 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 18.3002ms
+2026-05-09 02:56:57.859 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:56:57.861 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 31.2490 ms
+2026-05-09 02:56:57.864 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 36.7693ms
+2026-05-09 02:57:00.982 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:57:00.986 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:57:00.987 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:57:00.996 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:57:01.008 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:57:01.013 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:57:01.016 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 25.3363ms
+2026-05-09 02:57:01.019 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:57:01.021 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 35.2623 ms
+2026-05-09 02:57:01.025 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 43.0293ms
+2026-05-09 02:57:03.825 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:57:03.829 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:57:03.829 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:57:03.835 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:57:03.842 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:57:03.848 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:57:03.855 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 24.3769ms
+2026-05-09 02:57:03.859 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:57:03.860 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 31.6069 ms
+2026-05-09 02:57:03.863 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 38.7918ms
+2026-05-09 02:57:06.829 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:57:06.842 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:57:06.847 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:57:06.873 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:57:06.894 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:57:06.906 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:57:06.912 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 52.9999ms
+2026-05-09 02:57:06.920 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:57:06.924 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 82.0497 ms
+2026-05-09 02:57:06.929 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 99.3328ms
+2026-05-09 02:57:42.828 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - null null
+2026-05-09 02:57:42.838 +05:30 [INF] Executing endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:57:42.841 +05:30 [INF] Route matched with {action = "GetJob", controller = "Ticket"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetJob(Int32) on controller TrafficTicketAutomation.Controllers.TicketController (TrafficTicketAutomation).
+2026-05-09 02:57:42.860 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[BillFileName], [p].[CompletedAt], [p].[CreatedAt], [p].[ErrorMessage], [p].[ExcelFileName], [p].[Status]
+FROM [ProcessingJobs] AS [p]
+WHERE [p].[Id] = @__p_0
+2026-05-09 02:57:42.879 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__jobId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[Amount], [t].[ContractFound], [t].[ContractPdfPath], [t].[Customer], [t].[CustomerEmail], [t].[EmailBody], [t].[EmailSubject], [t].[ErrorMessage], [t].[FoundInBill], [t].[HighlightedBillPath], [t].[JobId], [t].[Plate], [t].[RA], [t].[RentalDays], [t].[TicketDate]
+FROM [TicketResults] AS [t]
+WHERE [t].[JobId] = @__jobId_0
+2026-05-09 02:57:42.887 +05:30 [INF] Executing OkObjectResult, writing value of type 'TrafficTicketAutomation.Models.DTOs.JobStatusDto'.
+2026-05-09 02:57:42.890 +05:30 [INF] Executed action TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation) in 39.5365ms
+2026-05-09 02:57:42.892 +05:30 [INF] Executed endpoint 'TrafficTicketAutomation.Controllers.TicketController.GetJob (TrafficTicketAutomation)'
+2026-05-09 02:57:42.893 +05:30 [INF] HTTP GET /api/ticket/job/1 responded 200 in 54.4132 ms
+2026-05-09 02:57:42.895 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5200/api/ticket/job/1 - 200 null application/json; charset=utf-8 67.6154ms

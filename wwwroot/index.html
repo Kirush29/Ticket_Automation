@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>407 Ticket Automation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; color: #222; }
+    header { background: #1a3c5e; color: #fff; padding: 18px 32px; font-size: 1.3rem; font-weight: 600; }
+    main { max-width: 1100px; margin: 32px auto; padding: 0 16px; }
+    .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 28px; margin-bottom: 24px; }
+    h2 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: #1a3c5e; }
+    .upload-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
+    .field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 220px; }
+    label { font-size: .85rem; font-weight: 500; color: #555; }
+    input[type=file] { border: 1px solid #ccc; border-radius: 6px; padding: 8px; font-size: .9rem; }
+    button { background: #1a3c5e; color: #fff; border: none; border-radius: 6px; padding: 10px 24px; font-size: .95rem; cursor: pointer; white-space: nowrap; }
+    button:disabled { background: #aaa; cursor: not-allowed; }
+    #status { margin-top: 14px; font-size: .9rem; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: .8rem; font-weight: 600; }
+    .badge-running { background: #fff3cd; color: #856404; }
+    .badge-completed { background: #d1e7dd; color: #0f5132; }
+    .badge-failed { background: #f8d7da; color: #842029; }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    th { background: #1a3c5e; color: #fff; padding: 10px 12px; text-align: left; }
+    td { padding: 9px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+    tr:hover td { background: #f8f9fa; }
+    .err { color: #c0392b; font-size: .82rem; }
+    .email-preview { white-space: pre-wrap; font-size: .82rem; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; padding: 8px; max-height: 120px; overflow-y: auto; }
+    a.dl { color: #1a3c5e; font-weight: 500; text-decoration: none; }
+    a.dl:hover { text-decoration: underline; }
+    #results { display: none; }
+  </style>
+</head>
+<body>
+  <header>407 ETR Traffic Ticket Automation</header>
+  <main>
+    <div class="card">
+      <h2>Upload Files</h2>
+      <div class="upload-row">
+        <div class="field">
+          <label>Excel Sheet (tickets.xlsx)</label>
+          <input type="file" id="excelFile" accept=".xlsx,.xls" />
+        </div>
+        <div class="field">
+          <label>407 Bill PDF</label>
+          <input type="file" id="billFile" accept=".pdf" />
+        </div>
+        <button id="startBtn" onclick="startJob()">Start Processing</button>
+      </div>
+      <div id="status"></div>
+    </div>
+
+    <div class="card" id="results">
+      <h2>Processing Results</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Plate</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>RA #</th>
+            <th>Customer</th>
+            <th>Days</th>
+            <th>In Bill</th>
+            <th>Files</th>
+            <th>Email Draft</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    let pollInterval = null;
+
+    async function startJob() {
+      const excelFile = document.getElementById('excelFile').files[0];
+      const billFile = document.getElementById('billFile').files[0];
+
+      if (!excelFile || !billFile) {
+        alert('Please select both files.');
+        return;
+      }
+
+      const btn = document.getElementById('startBtn');
+      btn.disabled = true;
+      setStatus('Uploading files...', 'running');
+
+      const form = new FormData();
+      form.append('excelFile', excelFile);
+      form.append('billFile', billFile);
+
+      try {
+        const res = await fetch('/api/ticket/upload', { method: 'POST', body: form });
+        if (!res.ok) throw new Error(await res.text());
+        const { jobId } = await res.json();
+        setStatus(`Job started (ID: ${jobId}). Processing...`, 'running');
+        pollInterval = setInterval(() => pollJob(jobId), 3000);
+      } catch (e) {
+        setStatus('Upload failed: ' + e.message, 'failed');
+        btn.disabled = false;
+      }
+    }
+
+    async function pollJob(jobId) {
+      try {
+        const res = await fetch(`/api/ticket/job/${jobId}`);
+        const job = await res.json();
+
+        setStatus(`Status: ${job.status}`, job.status.toLowerCase());
+
+        if (job.status === 'Completed' || job.status === 'Failed') {
+          clearInterval(pollInterval);
+          document.getElementById('startBtn').disabled = false;
+          if (job.results?.length) renderResults(job.results);
+        }
+      } catch (e) {
+        console.error('Poll error:', e);
+      }
+    }
+
+    function renderResults(results) {
+      const tbody = document.getElementById('resultsBody');
+      tbody.innerHTML = '';
+      document.getElementById('results').style.display = 'block';
+
+      results.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${r.plate}</td>
+          <td>${r.ticketDate?.split('T')[0]}</td>
+          <td>$${r.amount?.toFixed(2)}</td>
+          <td>${r.ra ?? '<span class="err">Not found</span>'}</td>
+          <td>${r.customer ?? '—'}</td>
+          <td>${r.rentalDays ?? '—'}</td>
+          <td>${r.foundInBill ? '✅' : '❌'}</td>
+          <td>
+            ${r.highlightedBillPath ? `<a class="dl" href="/api/ticket/download?path=${encodeURIComponent(r.highlightedBillPath)}" target="_blank">📄 Bill</a><br/>` : ''}
+            ${r.contractPdfPath ? `<a class="dl" href="/api/ticket/download?path=${encodeURIComponent(r.contractPdfPath)}" target="_blank">📋 Contract</a>` : ''}
+          </td>
+          <td>
+            ${r.emailSubject ? `<strong>${r.emailSubject}</strong><div class="email-preview">${r.emailBody}</div>` : ''}
+            ${r.errorMessage ? `<span class="err">${r.errorMessage}</span>` : ''}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function setStatus(msg, type) {
+      const el = document.getElementById('status');
+      const cls = type === 'running' ? 'badge-running' : type === 'completed' ? 'badge-completed' : 'badge-failed';
+      el.innerHTML = `<span class="badge ${cls}">${msg}</span>`;
+    }
+  </script>
+</body>
+</html>
