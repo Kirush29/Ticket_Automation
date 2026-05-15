@@ -1,30 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kirus\\TrafficTicketAutomation\\TrafficTicketAutomation.csproj": {}
+    "C:\\Users\\shafk\\Ticket_Automation\\TrafficTicketAutomation.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kirus\\TrafficTicketAutomation\\TrafficTicketAutomation.csproj": {
+    "C:\\Users\\shafk\\Ticket_Automation\\TrafficTicketAutomation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kirus\\TrafficTicketAutomation\\TrafficTicketAutomation.csproj",
+        "projectUniqueName": "C:\\Users\\shafk\\Ticket_Automation\\TrafficTicketAutomation.csproj",
         "projectName": "TrafficTicketAutomation",
-        "projectPath": "C:\\Users\\kirus\\TrafficTicketAutomation\\TrafficTicketAutomation.csproj",
-        "packagesPath": "C:\\Users\\kirus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kirus\\TrafficTicketAutomation\\obj\\",
+        "projectPath": "C:\\Users\\shafk\\Ticket_Automation\\TrafficTicketAutomation.csproj",
+        "packagesPath": "C:\\Users\\shafk\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\shafk\\Ticket_Automation\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\kirus\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\shafk\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net8.0-windows"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net8.0-windows": {
+            "framework": "net8.0-windows7.0",
+            "targetAlias": "net8.0-windows",
             "projectReferences": {}
           }
         },
@@ -37,21 +38,35 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net8.0-windows": {
+          "framework": "net8.0-windows7.0",
+          "targetAlias": "net8.0-windows",
           "dependencies": {
             "EPPlus": {
               "target": "Package",
               "version": "[8.5.4, )"
+            },
+            "FlaUI.Core": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "FlaUI.UIA3": {
+              "target": "Package",
+              "version": "[4.0.0, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.26, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[8.0.0, )"
             },
@@ -93,6 +108,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.27, 8.0.27]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.27, 8.0.27]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.27, 8.0.27]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.27, 8.0.27]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -101,7 +134,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.420/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

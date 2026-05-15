@@ -19,6 +19,11 @@ namespace TrafficTicketAutomation.Interfaces
         /// Returns null if PAD times out or reports failure.
         /// </summary>
         Task<AutomationResult?> ProcessTicketAsync(int ticketId, string plate, DateTime ticketDate, decimal amount);
+
+        /// <summary>
+        /// True when the configured automation provider has the required config and executable available.
+        /// </summary>
+        bool IsEnabled { get; }
     }
 
     public interface IEmailService

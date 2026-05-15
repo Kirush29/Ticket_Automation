@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TrafficTicketAutomation")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+916340a4efc1bf8e76aa2c20105ed118af1b7854")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9f7e89863ba3e24a92be45f22bee79929c9d9184")]
 [assembly: System.Reflection.AssemblyProductAttribute("TrafficTicketAutomation")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TrafficTicketAutomation")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

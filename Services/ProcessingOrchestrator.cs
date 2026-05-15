@@ -13,46 +13,49 @@ namespace TrafficTicketAutomation.Services
         private readonly IAutomationService _automation;
         private readonly IPdfService _pdf;
         private readonly IEmailService _email;
-        private readonly IConfiguration _config;
-        private readonly ILogger<ProcessingOrchestrator> _logger;
+    private readonly ContractService _contractService;
+    private readonly IConfiguration _config;
+    private readonly ILogger<ProcessingOrchestrator> _logger;
 
-        public ProcessingOrchestrator(
-            IServiceScopeFactory scopeFactory,
-            IExcelService excel,
-            IAutomationService automation,
-            IPdfService pdf,
-            IEmailService email,
-            IConfiguration config,
-            ILogger<ProcessingOrchestrator> logger)
+    public ProcessingOrchestrator(
+        IServiceScopeFactory scopeFactory,
+        IExcelService excel,
+        IAutomationService automation,
+        IPdfService pdf,
+        IEmailService email,
+        ContractService contractService,
+        IConfiguration config,
+        ILogger<ProcessingOrchestrator> logger)
+    {
+        _scopeFactory = scopeFactory;
+        _excel = excel;
+        _automation = automation;
+        _pdf = pdf;
+        _email = email;
+        _contractService = contractService;
+        _config = config;
+        _logger = logger;
+    }
+
+    public async Task<int> StartJobAsync(string excelPath, string billPath)
+    {
+        using var scope = _scopeFactory.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var job = new ProcessingJob
         {
-            _scopeFactory = scopeFactory;
-            _excel = excel;
-            _automation = automation;
-            _pdf = pdf;
-            _email = email;
-            _config = config;
-            _logger = logger;
-        }
+            ExcelFileName = Path.GetFileName(excelPath),
+            BillFileName = Path.GetFileName(billPath),
+            Status = JobStatus.Running
+        };
+        db.ProcessingJobs.Add(job);
+        await db.SaveChangesAsync();
 
-        public async Task<int> StartJobAsync(string excelPath, string billPath)
-        {
-            using var scope = _scopeFactory.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        _ = Task.Run(() => RunJobAsync(job.Id, excelPath, billPath));
+        return job.Id;
+    }
 
-            var job = new ProcessingJob
-            {
-                ExcelFileName = Path.GetFileName(excelPath),
-                BillFileName = Path.GetFileName(billPath),
-                Status = JobStatus.Running
-            };
-            db.ProcessingJobs.Add(job);
-            await db.SaveChangesAsync();
-
-            _ = Task.Run(() => RunJobAsync(job.Id, excelPath, billPath));
-            return job.Id;
-        }
-
-        private async Task RunJobAsync(int jobId, string excelPath, string billPath)
+    private async Task RunJobAsync(int jobId, string excelPath, string billPath)
         {
             using var scope = _scopeFactory.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -60,12 +63,10 @@ namespace TrafficTicketAutomation.Services
             var job = await db.ProcessingJobs.FindAsync(jobId);
             if (job == null) return;
 
-            // PAD automation is enabled when PAD exe path is configured
-            var padExe = _config["PAD:PadExePath"] ?? "";
-            bool automationEnabled = !string.IsNullOrWhiteSpace(padExe) && File.Exists(padExe);
+            bool automationEnabled = _automation.IsEnabled;
 
             if (!automationEnabled)
-                _logger.LogWarning("PAD not configured or exe not found — automation will be skipped.");
+                _logger.LogWarning("Automation service is disabled or not configured — automation will be skipped.");
 
             try
             {
@@ -98,14 +99,9 @@ namespace TrafficTicketAutomation.Services
                                 result.Id, ticket.Plate, ticket.Date, ticket.Amount);
                         }
 
-                        if (automation == null)
-                        {
-                            result.ContractFound = false;
-                            result.ErrorMessage = automationEnabled
-                                ? "PAD automation returned no result. Check Automation/Failed/ folder."
-                                : "PAD not configured. Set PAD:PadExePath in appsettings.json.";
-                        }
-                        else
+                        Contract? contractRecord = null;
+
+                        if (automation != null)
                         {
                             result.ContractFound = true;
                             result.RA = automation.RA;
@@ -113,34 +109,61 @@ namespace TrafficTicketAutomation.Services
                             result.CustomerEmail = automation.Email;
                             result.RentalDays = automation.RentalDays;
                             result.ContractPdfPath = automation.ContractPdfPath;
+
+                            contractRecord = new Contract
+                            {
+                                RA = automation.RA,
+                                Plate = ticket.Plate,
+                                Start = automation.RentalStart,
+                                End = automation.RentalEnd,
+                                Customer = automation.Customer,
+                                Email = automation.Email,
+                                Notes = automation.Notes
+                            };
+
+                            db.Contracts.Add(contractRecord);
+                        }
+                        else
+                        {
+                            var knownContract = _contractService.FindContract(ticket.Plate, ticket.Date);
+                            if (knownContract != null)
+                            {
+                                result.ContractFound = true;
+                                result.RA = knownContract.RA;
+                                result.Customer = knownContract.Customer;
+                                result.CustomerEmail = knownContract.Email;
+                                result.RentalDays = (knownContract.End - knownContract.Start).Days;
+                                result.ErrorMessage = automationEnabled
+                                    ? "Automation failed, but a matching contract was found in the local database."
+                                    : "Automation is disabled; using a matching contract from the local database.";
+
+                                contractRecord = knownContract;
+                            }
+                            else
+                            {
+                                result.ContractFound = false;
+                                result.ErrorMessage = automationEnabled
+                                    ? "Automation returned no result. Check the system logs for details."
+                                    : $"Automation is disabled or not configured for mode '{_config["Automation:Mode"] ?? "RentWorks"}'.";
+                            }
                         }
 
                         // Highlight PDF — runs regardless of automation result
                         var highlightedPath = Path.Combine(outputDir,
-                            $"highlighted_{ticket.Plate.Replace(" ", "_")}_{ticket.Date:yyyyMMdd}.pdf");
+                            $"highlighted_{result.Id}_{ticket.Plate.Replace(" ", "_")}_{ticket.Date:yyyyMMdd}.pdf");
 
                         result.FoundInBill = _pdf.HighlightRow(
                             billPath, ticket.Plate, ticket.Date, ticket.Amount, highlightedPath);
 
                         result.HighlightedBillPath = result.FoundInBill ? highlightedPath : null;
 
-                        // Email draft — only if automation succeeded
-                        if (automation != null)
+                        // Email draft — if contract information is available
+                        if (contractRecord != null)
                         {
-                            var contract = new Contract
-                            {
-                                RA = automation.RA,
-                                Customer = automation.Customer,
-                                Email = automation.Email,
-                                Start = automation.RentalStart,
-                                End = automation.RentalEnd,
-                                Plate = ticket.Plate
-                            };
-
                             var draft = _email.GenerateDraft(
-                                contract, ticket,
+                                contractRecord, ticket,
                                 result.HighlightedBillPath ?? "",
-                                automation.ContractPdfPath);
+                                result.ContractPdfPath ?? string.Empty);
 
                             result.EmailSubject = draft.Subject;
                             result.EmailBody = draft.Body;
@@ -199,13 +222,28 @@ namespace TrafficTicketAutomation.Services
                     RentalDays = r.RentalDays,
                     FoundInBill = r.FoundInBill,
                     ContractFound = r.ContractFound,
-                    HighlightedBillPath = r.HighlightedBillPath,
-                    ContractPdfPath = r.ContractPdfPath,
+                    HighlightedBillPath = ToRelativeDownloadPath(r.HighlightedBillPath),
+                    ContractPdfPath = ToRelativeDownloadPath(r.ContractPdfPath),
                     EmailSubject = r.EmailSubject,
                     EmailBody = r.EmailBody,
                     ErrorMessage = r.ErrorMessage
                 }).ToList()
             };
+        }
+
+        private static string? ToRelativeDownloadPath(string? fullPath)
+        {
+            if (string.IsNullOrWhiteSpace(fullPath)) return null;
+
+            var path = Path.IsPathRooted(fullPath)
+                ? Path.GetFullPath(fullPath)
+                : Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, fullPath));
+
+            var safeBase = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "Files"));
+            if (!path.StartsWith(safeBase, StringComparison.OrdinalIgnoreCase))
+                return null;
+
+            return Path.GetRelativePath(AppContext.BaseDirectory, path).Replace('\\', '/');
         }
     }
 }

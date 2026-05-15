@@ -14,13 +14,37 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    var provider = builder.Configuration["DatabaseProvider"]?.Trim();
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
 
-// PadQueueService is singleton — it holds a semaphore to enforce one RentWorks session at a time
-builder.Services.AddSingleton<IAutomationService, PadQueueService>();
+    if (provider?.Equals("Sqlite", StringComparison.OrdinalIgnoreCase) == true ||
+        connectionString.Contains("Data Source=", StringComparison.OrdinalIgnoreCase))
+    {
+        options.UseSqlite(connectionString);
+    }
+    else
+    {
+        options.UseSqlServer(connectionString);
+    }
+});
+
+builder.Services.AddSingleton<IAutomationService>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var mode = config["Automation:Mode"]?.Trim();
+    if (mode?.Equals("PAD", StringComparison.OrdinalIgnoreCase) == true)
+    {
+        return new PadQueueService(config, sp.GetRequiredService<ILogger<PadQueueService>>());
+    }
+
+    return new RentWorksAutomationService(config, sp.GetRequiredService<ILogger<RentWorksAutomationService>>());
+});
+
 builder.Services.AddScoped<IExcelService, ExcelService>();
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ContractService>();
 builder.Services.AddScoped<IProcessingOrchestrator, ProcessingOrchestrator>();
 
 builder.Services.AddControllers();

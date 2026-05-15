@@ -64,13 +64,18 @@ namespace TrafficTicketAutomation.Controllers
         [HttpGet("download")]
         public IActionResult Download([FromQuery] string path)
         {
+            if (string.IsNullOrWhiteSpace(path)) return BadRequest("Path is required.");
+
             var allowedBases = new[]
             {
                 Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "Files", "Output")),
                 Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "Files", "Contracts"))
             };
 
-            var fullPath = Path.GetFullPath(path);
+            var fullPath = Path.IsPathRooted(path)
+                ? Path.GetFullPath(path)
+                : Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, path));
+
             if (!allowedBases.Any(b => fullPath.StartsWith(b, StringComparison.OrdinalIgnoreCase)))
                 return Forbid();
 

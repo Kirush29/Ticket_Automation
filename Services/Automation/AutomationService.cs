@@ -27,6 +27,8 @@ namespace TrafficTicketAutomation.Services.Automation
             EnsureFolders();
         }
 
+        public bool IsEnabled => !string.IsNullOrWhiteSpace(_config["PAD:PadExePath"]) && File.Exists(_config["PAD:PadExePath"]);
+
         public async Task<AutomationResult?> ProcessTicketAsync(int ticketId, string plate, DateTime ticketDate, decimal amount)
         {
             // Only one RentWorks session at a time
